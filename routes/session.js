@@ -7,7 +7,7 @@ const {
   registerDo,
   logonShow,
   logoff,
-} = require("../controllers/session.js");
+} = require("../controllers/session");
 
 // Show registration form
 router.get("/register", registerShow);

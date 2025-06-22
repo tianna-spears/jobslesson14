@@ -1,5 +1,4 @@
 const Job = require("../models/Job");
-
 // GET /jobs (display all the job listings belonging to this user)
 const getJob = async (req, res) => {
   try {
@@ -14,26 +13,17 @@ const newForm = (req, res) => {
   res.render('job', { job: null });
 };
 
-
 // POST /jobs (Add a new job listing)
 const createJob = async (req, res) => {
   try {
     const { company, position, status } = req.body;
-    await Job.create({
-      company,
-      position,
-      status,
-      createdBy: req.user._id
-    });
+    await Job.create({ company, position, status, createdBy: req.user._id });
     res.redirect('/jobs');
   } catch (error) {
     res.status(500).send('Error creating job');
   }
 };
 
-
-
-// GET /jobs/edit/:id (Get a particular entry and show it in the edit box)
 const editForm = async (req, res) => {
   try {
     const job = await Job.findOne({ _id: req.params.id, createdBy: req.user._id });
@@ -44,7 +34,7 @@ const editForm = async (req, res) => {
   }
 };
 
-// POST /jobs/update/:id (Update a particular entry)
+// GET /jobs/edit/:id (Get a particular entry and show it in the edit box)
 const updateJobByID = async (req, res) => {
   try {
     const { company, position, status } = req.body;
@@ -68,8 +58,6 @@ const deleteJobByID = async (req, res) => {
     res.status(500).send('Error deleting job');
   }
 };
-
-
 
 module.exports = {
     getJob, 

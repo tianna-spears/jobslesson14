@@ -12,7 +12,6 @@
       <option value="declined" <%= job?.status === 'declined' ? 'selected' : '' %>>Declined</option>
     </select>
   </label><br>
-  <input type="hidden" name="_csrf" value="<%= _csrf %>" />
   <button type="submit"><%= job ? "Update Job" : "Create Job" %></button>
 </form>
 
