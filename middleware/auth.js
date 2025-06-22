@@ -1,24 +1,21 @@
-const User = require('../models/User')
+const User = require('../models/User');
 
-const authMiddleware = async (req, res, next) => {
+const requireAuth = async (req, res, next) => {
   try {
-    const { user } = req.body;
+    if (!req.session || !req.session.user) {
+      return res.status(401).json({ message: 'Unauthorized: No session found' });
+    }
 
+    const user = await User.findById(req.session.user._id);
     if (!user) {
-      return res.status(401).json({ message: 'No user provided' });
+      return res.status(401).json({ message: 'Unauthorized: User not found' });
     }
-
-    const isUser = await User.findOne({ username: user }); 
-
-    if (!isUser) {
-      return res.status(401).json({ message: 'User does not exist' });
-    }
-
-    req.user = isUser; 
-    next(); 
+    req.user = user;
+    next();
   } catch (err) {
-    res.status(500).json({ message: 'Auth middleware failed', error: err.message });
+    console.error('Auth Middleware Error:', err.message);
+    res.status(500).json({ message: 'Authentication failed', error: err.message });
   }
 };
 
-module.exports = authMiddleware
+module.exports = requireAuth;

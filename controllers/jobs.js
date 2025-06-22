@@ -1,5 +1,3 @@
-const express = require("express");
-const app = express();
 const Job = require("../models/Job");
 
 // GET /jobs (display all the job listings belonging to this user)
@@ -46,7 +44,6 @@ const editForm = async (req, res) => {
   }
 };
 
-
 // POST /jobs/update/:id (Update a particular entry)
 const updateJobByID = async (req, res) => {
   try {
@@ -61,7 +58,6 @@ const updateJobByID = async (req, res) => {
     res.status(500).send('Error updating job');
   }
 };
-
 
 // POST /jobs/delete/:id (Delete an entry)
 const deleteJobByID = async (req, res) => {

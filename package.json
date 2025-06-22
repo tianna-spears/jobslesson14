@@ -21,15 +21,20 @@
   },
   "homepage": "https://github.com/tianna-spears/jobslesson14#readme",
   "dependencies": {
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.7",
     "csrf": "^3.1.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.1",
+    "express-session": "^1.18.1",
     "helmet": "^8.1.0",
+    "host-csrf": "^1.0.2",
     "mongoose": "^8.16.0",
     "nodemon": "^3.1.10",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
     "xss-clean": "^0.1.4"
   }
 }
