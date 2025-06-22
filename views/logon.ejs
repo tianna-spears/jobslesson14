@@ -1,6 +1,6 @@
 <!-- View collects the email and password from the user -->
 
-<%- include("partials/head.ejs") %> <%- include("partials/header.ejs") %> 
+<%- include("header.ejs") %> <%- include("header.ejs") %> 
 
 <form method="POST" action="/sessions/logon">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -11,4 +11,4 @@
     <button type="button">Cancel</button> </a> </div>
 </form> 
 
-<%- include("partials/footer.ejs") %>
+<%- include("footer.ejs") %>

@@ -7,16 +7,16 @@ const flash = require('connect-flash');
 const connectDB = require('./db/connectDB');
 const jobRouter = require('./routes/jobs');
 const passportInit = require('./passport/passportInit');
-// // const csrf = require('host-csrf');
+const csrf = require('host-csrf');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
-// const requireAuth = require('./middleware/auth');
+const requireAuth = require('./middleware/auth');
 const sessionRouter = require('./routes/session');
 
 const app = express();
-const port = 1000;
+const port = 4000;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -41,39 +41,38 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// // CSRF protection 
-// let csrfDevelopmentMode = true;
-// if (app.get('env') === 'production') {
-//   csrfDevelopmentMode = false;
-//   app.set('trust proxy', 1);
-// }
+// CSRF protection 
+let csrfDevelopmentMode = true;
+if (app.get('env') === 'production') {
+  csrfDevelopmentMode = false;
+  app.set('trust proxy', 1);
+}
 
-// const csrfMiddleware = csrf({
-//   protected_operations: ['POST', 'PUT', 'PATCH', 'DELETE'],
-//   protected_content_types: ['application/x-www-form-urlencoded'],
-//   developer_mode: csrfDevelopmentMode,
-//   cookieParams: {
-//     sameSite: 'Strict',
-//   },
-// });
-// app.use(csrfMiddleware);
+const csrfMiddleware = csrf({
+  protected_operations: ['POST', 'PUT', 'PATCH', 'DELETE'],
+  protected_content_types: ['application/x-www-form-urlencoded'],
+  developer_mode: csrfDevelopmentMode,
+  cookieParams: {
+    sameSite: 'Strict',
+  },
+});
+app.use(csrfMiddleware);
 
-// app.use((req, res, next) => {
-// //   res.locals._csrf = req.csrfToken();
-//   res.locals.errors = req.flash('error');
-//   res.locals.info = req.flash('info');
-//   res.locals.user = req.user || null;
-//   next();
-// });
+app.use((req, res, next) => {
+  res.locals.errors = req.flash('error');
+  res.locals.info = req.flash('info');
+  res.locals.user = req.user || null;
+  next();
+});
 
 // Routes
 app.use('/sessions', sessionRouter);
 
-app.get('/home', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Home');
 });
 
-app.use('/jobs', jobRouter);
+app.use('/jobs', requireAuth, jobRouter);
 
 const start = async () => {
   try {
