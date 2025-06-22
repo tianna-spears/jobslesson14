@@ -7,16 +7,16 @@ const flash = require('connect-flash');
 const connectDB = require('./db/connectDB');
 const jobRouter = require('./routes/jobs');
 const passportInit = require('./passport/passportInit');
-// const csrf = require('host-csrf');
+// // const csrf = require('host-csrf');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
-const requireAuth = require('./middleware/auth');
+// const requireAuth = require('./middleware/auth');
 const sessionRouter = require('./routes/session');
 
 const app = express();
-const port = 5000;
+const port = 1000;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -58,22 +58,22 @@ app.use(flash());
 // });
 // app.use(csrfMiddleware);
 
-app.use((req, res, next) => {
-//   res.locals._csrf = req.csrfToken();
-  res.locals.errors = req.flash('error');
-  res.locals.info = req.flash('info');
-  res.locals.user = req.user || null;
-  next();
-});
+// app.use((req, res, next) => {
+// //   res.locals._csrf = req.csrfToken();
+//   res.locals.errors = req.flash('error');
+//   res.locals.info = req.flash('info');
+//   res.locals.user = req.user || null;
+//   next();
+// });
 
 // Routes
 app.use('/sessions', sessionRouter);
 
 app.get('/home', (req, res) => {
-  res.json('home page');
+  res.send('Home');
 });
 
-app.use('/jobs', requireAuth, jobRouter);
+app.use('/jobs', jobRouter);
 
 const start = async () => {
   try {
